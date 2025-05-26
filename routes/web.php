@@ -20,11 +20,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// Routes untuk UI (Sebelumnya Screenshot UI)
-// Route::prefix('screenshots')->name('screenshots.')->group(function () { // Prefix dan nama grup dihapus
-    Route::get('login-page', function () { // Path diubah, misal 'login' jadi 'login-page' untuk menghindari konflik jika ada route /login lain
-        return view('pages.login'); // Path view diubah
-    })->name('login.page'); // Nama route diubah
+
+    Route::get('login-page', function () {
+        return view('pages.login');
+    })->name('login.page');
 
     Route::get('dashboard-auditor', function () {
         return view('pages.dashboard_auditor');
@@ -50,9 +49,9 @@ require __DIR__.'/auth.php';
         return view('pages.laporan_audit_contoh');
     })->name('laporan.audit.contoh');
 
-    Route::get('forget-password-page', function () { // Path diubah
+    Route::get('forget-password-page', function () {
         return view('pages.forget_password');
-    })->name('forget.password.page'); // Nama route diubah
+    })->name('forget.password.page'); 
 
     Route::get('tambah-dokumen', function () {
         return view('pages.tambah_dokumen');
@@ -74,9 +73,9 @@ require __DIR__.'/auth.php';
         return view('pages.bukti_pendukung_auditee');
     })->name('bukti.pendukung.auditee');
 
-    Route::get('profile-page', function () { // Path diubah
+    Route::get('profile-page', function () {
         return view('pages.profile');
-    })->name('profile.page'); // Nama route diubah
+    })->name('profile.page');
 
     Route::get('history', function () {
         return view('pages.history');
@@ -98,7 +97,6 @@ require __DIR__.'/auth.php';
         return view('pages.visitasi_lapangan');
     })->name('visitasi.lapangan');
 
-    Route::get('tambah-history', function () { // Path diubah
+    Route::get('tambah-history', function () {
         return view('pages.tambah_history');
-    })->name('tambah.history'); // Nama route diubah
-// }); // Akhir grup dihapus
+    })->name('tambah.history');

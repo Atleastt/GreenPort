@@ -6,23 +6,22 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
             <div class="p-3 bg-blue-500 text-white rounded-full">
-                <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                <img class="h-12 w-auto" src="{{ asset('images/icon/total-dokumen-icon.svg') }}" alt="Dokumen Icon">
             </div>
             <div>
-                <p class="text-3xl font-semibold text-gray-800">99999</p>
+                <p class="text-3xl font-semibold text-gray-800">18273</p>
                 <p class="text-gray-500">Total Dokumen</p>
             </div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
             <div class="p-3 bg-green-500 text-white rounded-full">
-                <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.243-3.72a9.094 9.094 0 013.741-.479 3 3 0 01-4.682-2.72m-.243-3.72a9.094 9.094 0 00-3.741-.479 3 3 0 00-4.682 2.72M12 12c-1.160 0-2.196.447-2.976 1.198M12 12c1.160 0 2.196.447 2.976 1.198m-2.976 0c.169.18.354.346.55.498m2.426-.498c.196-.152.381-.318.55-.498M12 12l1.073 1.073m-2.146 0L12 12m0 0V7.5m0 4.5A3.375 3.375 0 0112 15a3.375 3.375 0 010-3.375z" /></svg>
+                <img class="h-12 w-auto" src="{{ asset('images/icon/total-users-icon.svg') }}" alt="Pengguna Icon">
             </div>
             <div>
-                <p class="text-3xl font-semibold text-gray-800">50</p>
+                <p class="text-3xl font-semibold text-gray-800">120</p>
                 <p class="text-gray-500">Total Pengguna</p>
             </div>
         </div>
-        {{-- Add more cards if needed --}}
     </div>
 
     <!-- Charts -->

@@ -46,7 +46,7 @@
             
             <!-- Logo -->
             <div class="flex items-center justify-center h-20 border-b border-emerald-600 flex-shrink-0">
-                <img src="{{ asset('logo-login.png') }}" alt="GreenPort Logo" class="h-full bg-white rounded-full">
+                <img src="{{ asset('images/icon/sidebar-logo.svg') }}" alt="GreenPort Logo" class="h-12 w-12 bg-white rounded-full border border-white">
             </div>
 
             <!-- Navigation Links -->
@@ -71,7 +71,7 @@
                         <a href="{{ route('bukti.pendukung.auditee') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('bukti-pendukung-auditee') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Bukti Pendukung (Auditee)</a>
                     </div>
                 </div>
-                 <div x-data="{ open: @json(request()->is('tambah-dokumen') || request()->is('tambah-dokumen*')) }" class="space-y-1">
+                 {{-- <div x-data="{ open: @json(request()->is('tambah-dokumen') || request()->is('tambah-dokumen*')) }" class="space-y-1">
                     <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-md hover:bg-emerald-600 focus:outline-none {{ request()->is('tambah-dokumen*') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
                         <span class="flex items-center">
                             <img class="h-6 w-6 mr-3" src="{{ asset('images/icon/dokumen-icon.svg') }}" alt="Dokumen Icon">
@@ -81,9 +81,9 @@
                     </button>
                     <div x-show="open" x-cloak x-transition class="ml-4 pl-4 border-l-2 border-emerald-500 space-y-1">
                         <a href="{{ route('tambah.dokumen') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('tambah-dokumen') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Input Dokumen</a>
-                        {{-- <a href="#" class="block px-3 py-2 rounded-md hover:bg-emerald-600">List Dokumen</a> --}}
+                        <a href="#" class="block px-3 py-2 rounded-md hover:bg-emerald-600">List Dokumen</a>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <a href="{{ route('history') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('history*') || request()->is('lihat-history') || request()->is('tambah-history') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">

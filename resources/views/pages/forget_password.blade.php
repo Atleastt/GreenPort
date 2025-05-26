@@ -4,9 +4,7 @@
 <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-emerald-700">
     <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white shadow-xl overflow-hidden sm:rounded-lg">
         <div class="flex flex-col items-center mb-8">
-            <svg class="h-16 w-16 text-emerald-600 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-        </svg>
+            <img class="h-12 w-auto mb-3" src="{{ asset('images/icon/forgot-password-icon.svg') }}" alt="Forget Password Icon">
             <h1 class="text-3xl font-bold text-emerald-700">Lupa Password</h1>
             <p class="text-gray-600 mt-1 text-center px-4">Masukkan alamat email Anda dan kami akan mengirimkan instruksi untuk mereset password Anda.</p>
         </div>
