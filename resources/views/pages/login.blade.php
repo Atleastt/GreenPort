@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+    @extends('layouts.auth')
 
 @section('content')
 <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-emerald-700">
@@ -50,7 +50,7 @@
             </div>
              <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
-                    Belum punya akun? 
+                    Belum punya akun?
                     <a href="{{ route('register') }}" class="font-medium text-emerald-600 hover:text-emerald-500">
                         Daftar di sini
                     </a>

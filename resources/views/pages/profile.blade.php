@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-3xl mx-auto">
     <h1 class="text-2xl font-semibold text-gray-700 mb-6">Pengaturan Profil</h1>
-    
+
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="md:flex">
             <!-- Sidebar/Nav -->
@@ -50,7 +50,7 @@
                 </div>
                         <div class="pt-2">
                             <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 text-sm font-semibold">
-                                Simpan Perubahan Informasi
+                                Simpan
                             </button>
             </div>
                     </form>

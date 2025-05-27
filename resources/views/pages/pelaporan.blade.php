@@ -3,7 +3,7 @@
 @section('content')
 <div x-data="{ deleteModalOpen: false, itemToDelete: '' }">
         <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold text-gray-700">Pelaporan Audit</h1>
+        <h1 class="text-2xl font-semibold text-gray-700">Pelaporan</h1>
         <a href="{{ route('tambah.pelaporan') }}" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">
             Tambah Laporan Baru
             </a>

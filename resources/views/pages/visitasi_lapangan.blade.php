@@ -17,9 +17,9 @@
                     <select id="auditee_name" name="auditee_name"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                         <option value="">Pilih Auditee</option>
-                        <option value="PT Pelabuhan Jaya">PT Pelabuhan Jaya (Contoh)</option>
-                        <option value="Terminal Petikemas Sentosa">Terminal Petikemas Sentosa (Contoh)</option>
-                        <option value="Gudang Logistik Bahari">Gudang Logistik Bahari (Contoh)</option>
+                        <option value="PT Pelabuhan Jaya">PT Pelabuhan Jaya</option>
+                        <option value="Terminal Petikemas Sentosa">Terminal Petikemas Sentosa</option>
+                        <option value="Gudang Logistik Bahari">Gudang Logistik Bahari</option>
                     </select>
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <div class="flex justify-end pt-2">
                 <button type="submit"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                    Simpan Jadwal
+                    Simpan
                 </button>
             </div>
         </form>

@@ -10,9 +10,9 @@
                 <select id="parent_kriteria" name="parent_kriteria"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                     <option value="">-- Pilih Kriteria --</option>
-                    <option value="kriteria_1">Kriteria - 1 (Contoh)</option>
-                    <option value="kriteria_2">Kriteria - 2 (Contoh)</option>
-                    <option value="kriteria_3">Kriteria - 3 (Contoh)</option>
+                    <option value="kriteria_1">Kriteria 1</option>
+                    <option value="kriteria_2">Kriteria 2</option>
+                    <option value="kriteria_3">Kriteria 3</option>
                 </select>
             </div>
             <div>
@@ -23,7 +23,7 @@
             <div class="flex justify-end">
                 <button type="submit"
                         class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400">
-                    Simpan Sub-Kriteria
+                    Simpan
                 </button>
             </div>
         </form>

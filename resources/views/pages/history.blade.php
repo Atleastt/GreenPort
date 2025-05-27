@@ -9,9 +9,9 @@
                     <svg class="h-5 w-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>
                     Urutkan
                 </button>
-            <a href="{{ route('tambah.history') }}" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">
-                Tambah Riwayat (Contoh)
-            </a>
+{{--            <a href="{{ route('tambah.history') }}" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">--}}
+{{--                Tambah Riwayat--}}
+{{--            </a>--}}
             </div>
         </div>
 

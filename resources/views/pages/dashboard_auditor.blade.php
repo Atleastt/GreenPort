@@ -34,9 +34,8 @@
                     <option>Jul - Dec</option>
                 </select>
             </div>
-            <div class="h-72 bg-gray-200 flex items-center justify-center rounded">
-                <p class="text-gray-500">Placeholder untuk Grafik Garis (Line Chart)</p>
-                {{-- Chart.js atau ApexCharts canvas akan diletakkan di sini --}}
+            <div class="h-72 rounded">
+                <canvas id="lineChart"></canvas>
             </div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md">
@@ -47,9 +46,8 @@
                     <option>Jul - Dec</option>
                 </select>
             </div>
-            <div class="h-48 bg-gray-200 flex items-center justify-center rounded mb-4">
-                <p class="text-gray-500">Placeholder Grafik Batang (Bar Chart)</p>
-                 {{-- Chart.js atau ApexCharts canvas akan diletakkan di sini --}}
+            <div class="h-48 rounded mb-4">
+                <canvas id="barChart"></canvas>
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div class="h-12 bg-sky-300 rounded flex items-center justify-center text-sky-800 text-sm">Auditee</div>
@@ -72,7 +70,7 @@
                     <svg class="h-5 w-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>
                     Urutkan
                 </button>
-                <a href="{{ route('tambah.history') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">
+                <a href="{{ route('tambah.dokumen') }}" class="bg-lime-500 hover:bg-lime-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">
                     Tambah Dokumen
                 </a>
             </div>
@@ -147,4 +145,81 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data untuk Line Chart
+    const lineChartData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+        datasets: [{
+            label: 'Dokumen Diaudit',
+            data: [65, 59, 80, 81, 56, 55],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+
+    // Konfigurasi Line Chart
+    const lineChartConfig = {
+        type: 'line',
+        data: lineChartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Render Line Chart
+    const lineChart = new Chart(
+        document.getElementById('lineChart'),
+        lineChartConfig
+    );
+
+    // Data untuk Bar Chart
+    const barChartData = {
+        labels: ['Selesai', 'Proses', 'Revisi'],
+        datasets: [{
+            label: 'Status Dokumen',
+            data: [300, 50, 100],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(255, 99, 132, 0.2)'
+            ],
+            borderColor: [
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Konfigurasi Bar Chart
+    const barChartConfig = {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Render Bar Chart
+    const barChart = new Chart(
+        document.getElementById('barChart'),
+        barChartConfig
+    );
+</script>
 @endsection

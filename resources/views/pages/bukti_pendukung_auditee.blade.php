@@ -4,7 +4,7 @@
 <div x-data="{ deleteModalOpen: false, itemToDelete: '' }">
     <!-- Judul Halaman -->
     <div class="mb-6">
-        <h1 class="text-2xl font-semibold text-gray-700">Input Bukti Pendukung (Auditee)</h1>
+        <h1 class="text-2xl font-semibold text-gray-700">Input Bukti Pendukung</h1>
         <p class="text-sm text-gray-500">Halaman ini digunakan oleh Auditee untuk mengunggah dan mengelola dokumen bukti pendukung.</p>
     </div>
 
@@ -16,10 +16,10 @@
                 <label for="indicator_id" class="block text-sm font-medium text-gray-700">Pilih Indikator</label>
                 <select id="indicator_id" name="indicator_id"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-                    <option value="">-- Pilih Indikator Terkait --</option>
-                    <option value="1">Indikator A: Kepatuhan Regulasi X (Contoh)</option>
-                    <option value="2">Indikator B: Prosedur Keselamatan Y (Contoh)</option>
-                    <option value="3">Indikator C: Pelatihan Staf Z (Contoh)</option>
+                    <option value=""> -- Pilih Indikator Terkait -- </option>
+                    <option value="1">Kepatuhan Regulasi X</option>
+                    <option value="2">Prosedur Keselamatan Y</option>
+                    <option value="3">Pelatihan Staf Z</option>
                 </select>
             </div>
 
@@ -39,7 +39,7 @@
             <div class="flex justify-end">
                 <button type="submit"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                    Simpan Bukti
+                    Simpan
                 </button>
             </div>
         </form>

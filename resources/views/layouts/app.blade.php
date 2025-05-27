@@ -68,7 +68,7 @@
                         <a href="{{ route('indikator.dokumen') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('indikator-dokumen') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Indikator Dokumen</a>
                         <a href="{{ route('insert.kriteria.auditor') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('insert-kriteria-auditor') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Kriteria Dokumen</a>
                         <a href="{{ route('insert.sub.kriteria.auditor') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('insert-sub-kriteria-auditor') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Sub-Kriteria</a>
-                        <a href="{{ route('bukti.pendukung.auditee') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('bukti-pendukung-auditee') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Bukti Pendukung (Auditee)</a>
+                        <a href="{{ route('bukti.pendukung.auditee') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('bukti-pendukung-auditee') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Bukti Pendukung</a>
                     </div>
                 </div>
                  {{-- <div x-data="{ open: @json(request()->is('tambah-dokumen') || request()->is('tambah-dokumen*')) }" class="space-y-1">

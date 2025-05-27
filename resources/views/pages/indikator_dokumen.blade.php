@@ -16,7 +16,7 @@
                 <input type="text" name="indicator_name" id="indicator_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" placeholder="Contoh: Kebersihan Area Dermaga">
             </div>
             <div>
-                <label for="indicator_description" class="block text-sm font-medium text-gray-700">Deskripsi Indikator (Opsional)</label>
+                <label for="indicator_description" class="block text-sm font-medium text-gray-700">Deskripsi Indikator</label>
                 <textarea name="indicator_description" id="indicator_description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm" placeholder="Deskripsi singkat mengenai indikator ini"></textarea>
             </div>
             <div>
@@ -29,7 +29,7 @@
                 </select>
             </div>
             <div class="flex justify-end">
-                <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 text-sm font-semibold">Simpan Indikator</button>
+                <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 text-sm font-semibold">Simpan</button>
             </div>
         </form>
     </div>

@@ -6,7 +6,7 @@
     <p class="text-gray-600 mt-2">Konten spesifik dan form untuk menambah dokumen akan diimplementasikan di sini berdasarkan desain Figma.</p>
     
     <div class="mt-6 bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Form Tambah Dokumen (Contoh)</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Form Tambah Dokumen</h2>
         <form action="#" method="POST" class="space-y-4">
             <div>
                 <label for="document_name" class="block text-sm font-medium text-gray-700">Nama Dokumen</label>
