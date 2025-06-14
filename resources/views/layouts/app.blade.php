@@ -13,7 +13,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Styles -->
     <style>
@@ -33,6 +32,7 @@
         }
         [x-cloak] { display: none !important; }
     </style>
+    @laravelPWA
     @stack('styles')
 </head>
 <body class="font-sans antialiased bg-gray-100">
@@ -54,6 +54,10 @@
                 <a href="{{ route('dashboard.auditor') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('dashboard-auditor*') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
                     <img class="h-6 w-6 mr-3" src="{{ asset('images/icon/dashboard-icon.svg') }}" alt="Dashboard Icon">
                     Dashboard
+                </a>
+                <a href="{{ route('admin.kriteria.index') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('admin.kriteria.*') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
+                    <img class="h-6 w-6 mr-3" src="{{ asset('images/icon/kriteria-icon.svg') }}" alt="Kriteria Icon">
+                    Manajemen Kriteria
                 </a>
 
                 <div x-data="{ open: @json(request()->is('indikator-dokumen') || request()->is('insert-kriteria-auditor') || request()->is('bukti-pendukung-auditee') || request()->is('insert-sub-kriteria-auditor')) }" class="space-y-1">
@@ -167,7 +171,29 @@
 
             <!-- Page Content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6 custom-scrollbar">
-                @yield('content')
+                @if (session('success'))
+                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="bg-green-100 dark:bg-green-900/50 border-l-4 border-green-500 text-green-700 dark:text-green-300 p-4 mb-6 rounded-md shadow-md" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="font-bold">Sukses</p>
+                                <p class="text-sm">{{ session('success') }}</p>
+                            </div>
+                            <button @click="show = false" class="ml-auto text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
+                @if (isset($header))
+                    <header class="bg-white dark:bg-gray-800 shadow rounded-lg mb-6">
+                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endif
+
+                {{ $slot }}
             </main>
         </div>
     </div>

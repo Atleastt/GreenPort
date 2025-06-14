@@ -1,4 +1,72 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Detail Riwayat Audit') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <!-- Informasi Umum Audit -->
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Informasi Audit</h3>
+                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Nama Audit</p>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200">Audit Sistem Informasi</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Auditee</p>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200">Departemen IT</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Periode</p>
+                            <p class="font-semibold text-gray-800 dark:text-gray-200">1 Juni 2024 - 30 Juni 2024</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Hasil</p>
+                            <p class="font-semibold text-green-600 dark:text-green-400">Sesuai</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daftar Temuan -->
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Daftar Temuan</h3>
+                <div class="mt-4 overflow-x-auto">
+                    <p class="text-gray-600 dark:text-gray-400">Tidak ada temuan yang tercatat untuk audit ini.</p>
+                    <!-- Contoh jika ada temuan -->
+                    {{-- <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">ID Temuan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Deskripsi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">TM-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">Firewall tidak terkonfigurasi dengan benar.</td>
+                                <td class="px-6 py-4 text-sm text-green-600 dark:text-green-400">Selesai</td>
+                            </tr>
+                        </tbody>
+                    </table> --}}
+                </div>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="flex justify-end space-x-4">
+                <a href="{{ url()->previous() }}" class="rounded-md border border-gray-300 bg-white dark:bg-gray-700 py-2 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600">Kembali</a>
+                <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">Cetak Laporan</button>
+            </div>
+
+        </div>
+    </div>
+</x-app-layout>
 
 @section('content')
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">

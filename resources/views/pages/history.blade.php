@@ -1,4 +1,82 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Riwayat Audit') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Filter Section -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dari Tanggal</label>
+                        <input type="date" name="start_date" id="start_date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sampai Tanggal</label>
+                        <input type="date" name="end_date" id="end_date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="status_filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                        <select id="status_filter" name="status_filter" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 py-2 px-3 shadow-sm sm:text-sm">
+                            <option>Semua</option>
+                            <option>Selesai</option>
+                            <option>Diarsipkan</option>
+                        </select>
+                    </div>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">Filter</button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Audit</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Auditee</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal Selesai</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Hasil</th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                        <span class="sr-only">Aksi</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Audit Sistem Informasi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Departemen IT</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">30 Juni 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">Sesuai</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">Lihat Laporan</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Audit K3 Gudang</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Departemen Gudang</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">15 Mei 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300">Dengan Temuan</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">Lihat Laporan</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
 
 @section('content')
 <div x-data="{ deleteModalOpen: false, itemToDelete: '' }">

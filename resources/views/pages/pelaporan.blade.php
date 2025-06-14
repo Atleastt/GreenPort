@@ -1,4 +1,77 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Pelaporan Audit') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <!-- Filter Laporan -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Filter Laporan</h3>
+                <form action="#" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label for="report_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Laporan</label>
+                        <select id="report_type" name="report_type" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 py-2 px-3 shadow-sm sm:text-sm">
+                            <option>Ringkasan Eksekutif</option>
+                            <option>Laporan Temuan Rinci</option>
+                            <option>Laporan Tindak Lanjut</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Periode Mulai</label>
+                        <input type="date" name="start_date" id="start_date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Periode Selesai</label>
+                        <input type="date" name="end_date" id="end_date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm sm:text-sm">
+                    </div>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md shadow-sm text-sm">Buat Laporan</button>
+                </form>
+            </div>
+
+            <!-- Tabel Laporan Tersedia -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <h3 class="text-lg font-medium mb-4">Laporan Tersedia</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Laporan</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal Dibuat</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Periode</th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                        <span class="sr-only">Aksi</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Laporan Temuan Rinci Q2 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">01 Juli 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1 Apr 2024 - 30 Jun 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Unduh (PDF)</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Ringkasan Eksekutif Audit K3</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">15 Juni 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1 Mei 2024 - 31 Mei 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">Unduh (PDF)</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
 
 @section('content')
 <div x-data="{ deleteModalOpen: false, itemToDelete: '' }">

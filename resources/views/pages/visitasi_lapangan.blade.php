@@ -1,4 +1,84 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Formulir Visitasi Lapangan') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <form action="#" method="POST" class="space-y-6">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Tanggal Visitasi -->
+                            <div>
+                                <label for="tanggal_visitasi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Visitasi</label>
+                                <input type="date" name="tanggal_visitasi" id="tanggal_visitasi" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+
+                            <!-- Lokasi -->
+                            <div>
+                                <label for="lokasi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lokasi/Departemen</label>
+                                <input type="text" name="lokasi" id="lokasi" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Contoh: Gudang Bahan Baku">
+                            </div>
+
+                            <!-- Nama Auditor -->
+                            <div>
+                                <label for="nama_auditor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Auditor</label>
+                                <input type="text" name="nama_auditor" id="nama_auditor" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Nama lengkap auditor">
+                            </div>
+                        </div>
+
+                        <!-- Checklist Visitasi -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Daftar Periksa Kepatuhan</label>
+                            <div class="mt-2 space-y-2 rounded-md border border-gray-200 dark:border-gray-700 p-4">
+                                <div class="flex items-start">
+                                    <div class="flex h-5 items-center">
+                                        <input id="check1" name="checklist[]" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="check1" class="font-medium text-gray-700 dark:text-gray-300">Area kerja bersih dan terorganisir.</label>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex h-5 items-center">
+                                        <input id="check2" name="checklist[]" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="check2" class="font-medium text-gray-700 dark:text-gray-300">Alat Pelindung Diri (APD) digunakan sesuai standar.</label>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex h-5 items-center">
+                                        <input id="check3" name="checklist[]" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="check3" class="font-medium text-gray-700 dark:text-gray-300">Prosedur darurat dipahami oleh staf.</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Catatan Lapangan -->
+                        <div>
+                            <label for="catatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Catatan Lapangan & Temuan</label>
+                            <textarea name="catatan" id="catatan" rows="6" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Tuliskan observasi, temuan, atau bukti yang dikumpulkan selama visitasi."></textarea>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" class="rounded-md border border-gray-300 bg-white dark:bg-gray-700 py-2 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600">Simpan Draf</button>
+                            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">Selesaikan & Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
 
 @section('content')
 <div x-data="{ deleteModalOpen: false, itemToDelete: null }">
