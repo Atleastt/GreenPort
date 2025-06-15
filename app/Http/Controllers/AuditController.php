@@ -95,4 +95,32 @@ class AuditController extends Controller
         return redirect()->route('daftar.audit.auditor')
                          ->with('success', 'Audit berhasil dihapus.');
     }
+
+    /**
+     * Display a listing of the completed audits.
+     */
+    public function history()
+    {
+        $audits = Audit::with(['auditor', 'auditee'])
+                         ->where('status', 'Completed') // Asumsi status 'Completed' untuk riwayat
+                         ->latest()
+                         ->paginate(10);
+
+        return view('pages.history', compact('audits'));
+    }
+
+    /**
+     * Show the audit report for a specific audit.
+     */
+    public function showReport(Audit $audit)
+    {
+        // Pastikan hanya audit yang selesai yang bisa dilihat laporannya
+        if ($audit->status !== 'Completed') {
+            abort(404, 'Laporan tidak ditemukan atau belum selesai.');
+        }
+
+        // Anda bisa membuat view khusus untuk laporan di sini
+        // Untuk saat ini, kita akan gunakan view contoh
+        return view('pages.laporan_audit_contoh', compact('audit'));
+    }
 }

@@ -51,7 +51,7 @@
 
             <!-- Navigation Links -->
             <nav class="flex-grow p-4 space-y-2">
-                <a href="{{ route('dashboard.auditor') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('dashboard-auditor*') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->routeIs('dashboard') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
                     <img class="h-6 w-6 mr-3" src="{{ asset('images/icon/dashboard-icon.svg') }}" alt="Dashboard Icon">
                     Dashboard
                 </a>
@@ -69,10 +69,10 @@
                         <img :class="{'rotate-180': open}" class="h-5 w-5 transform transition-transform duration-200" src="{{ asset('images/icon/panah-dropdown-icon.svg') }}" alt="Panah Dropdown">
                     </button>
                     <div x-show="open" x-cloak x-transition class="ml-4 pl-4 border-l-2 border-emerald-500 space-y-1">
-                        <a href="{{ route('indikator.dokumen') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('indikator-dokumen') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Indikator Dokumen</a>
-                        <a href="{{ route('insert.kriteria.auditor') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('insert-kriteria-auditor') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Kriteria Dokumen</a>
+                        <a href="{{ route('indikator-dokumen.index') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('indikator-dokumen') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Indikator Dokumen</a>
+                        <a href="{{ route('kriteria.create') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('insert-kriteria-auditor') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Kriteria Dokumen</a>
                         <a href="{{ route('insert.sub.kriteria.auditor') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('insert-sub-kriteria-auditor') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Sub-Kriteria</a>
-                        <a href="{{ route('bukti.pendukung.auditee') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->is('bukti-pendukung-auditee') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Bukti Pendukung</a>
+                        <a href="{{ route('bukti-pendukung.index') }}" class="block px-3 py-2 rounded-md hover:bg-emerald-600 {{ request()->routeIs('bukti-pendukung.*') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">Bukti Pendukung</a>
                     </div>
                 </div>
                  {{-- <div x-data="{ open: @json(request()->is('tambah-dokumen') || request()->is('tambah-dokumen*')) }" class="space-y-1">
@@ -106,7 +106,7 @@
 
             <!-- Bottom Links -->
             <div class="p-4 border-t border-emerald-600 mt-auto flex-shrink-0">
-                <a href="{{ route('profile.page') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('profile-page') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
+                <a href="{{ route('profile.edit') }}" class="flex items-center px-3 py-2.5 rounded-md hover:bg-emerald-600 {{ request()->is('profile') ? 'bg-lime-200 text-emerald-800 font-semibold' : '' }}">
                     <img class="h-6 w-6 mr-3" src="{{ asset('images/icon/pengaturan-icon.svg') }}" alt="Pengaturan Icon">
                     Pengaturan
                 </a>
@@ -152,7 +152,7 @@
                              x-transition:leave="transition ease-in duration-75 transform"
                              x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                              class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                            <a href="{{ route('profile.page') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pengaturan Akun</a>
                             
                             Logout Form

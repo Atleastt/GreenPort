@@ -1,20 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\KriteriaController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\DashboardAuditorController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndikatorController;
+use App\Http\Controllers\BuktiPendukungController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\VisitasiLapanganController;
+use App\Http\Controllers\IndikatorDokumenController;
+use App\Http\Controllers\LaporanController;
 
-// Redirect root ke halaman login statis
+// Redirect root ke halaman login
 Route::get('/', function () {
-    return redirect()->route('login.page');
+    return redirect()->route('login');
 });
 
-// Halaman login statis (publik)
-Route::view('login-page', 'pages.login')->name('login.page');
+// Rute Autentikasi
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
 
 /*
 |-----------------------------------
@@ -27,9 +36,7 @@ Route::middleware([
 ])->group(function () {
 
     // Dashboard default Jetstream
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Manajemen Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,7 +49,6 @@ Route::middleware([
     });
 
     // ---------- Halaman Statis/Mockup ----------
-    Route::get('dashboard-auditor', [DashboardAuditorController::class, 'index'])->name('dashboard.auditor');
     Route::view('dashboard-auditee', 'pages.dashboard_auditee')->name('dashboard.auditee');
     Route::get('daftar-audit-auditor', [AuditController::class, 'index'])->name('daftar.audit.auditor');
     Route::view('detail-audit-auditee', 'pages.detail_audit_auditee')->name('detail.audit.auditee');
@@ -56,24 +62,24 @@ Route::middleware([
     Route::view('forget-password-page', 'pages.forget_password')->name('forget.password.page');
     Route::view('tambah-dokumen', 'pages.tambah_dokumen')->name('tambah.dokumen');
     Route::view('indikator-dokumen', 'pages.indikator_dokumen')->name('indikator.dokumen');
-    Route::view('insert-kriteria-auditor', 'pages.insert_kriteria_auditor')->name('insert.kriteria.auditor');
-    Route::view('insert-sub-kriteria-auditor', 'pages.insert_sub_kriteria_auditor')->name('insert.sub.kriteria.auditor');
-    Route::view('bukti-pendukung-auditee', 'pages.bukti_pendukung_auditee')->name('bukti.pendukung.auditee');
-    Route::view('profile-page', 'pages.profile')->name('profile.page');
-    Route::view('history', 'pages.history')->name('history');
-    Route::view('lihat-history', 'pages.lihat_history')->name('lihat.history');
-    Route::view('pelaporan', 'pages.pelaporan')->name('pelaporan');
+    Route::get('insert-kriteria-auditor', [App\Http\Controllers\KriteriaController::class, 'create'])->name('kriteria.create');
+    Route::post('insert-kriteria-auditor', [App\Http\Controllers\KriteriaController::class, 'store'])->name('kriteria.store');
+    Route::get('insert-sub-kriteria-auditor', [App\Http\Controllers\KriteriaController::class, 'createSubKriteria'])->name('insert.sub.kriteria.auditor');
+    Route::post('insert-sub-kriteria-auditor', [App\Http\Controllers\KriteriaController::class, 'storeSubKriteria'])->name('subkriteria.store');
+    Route::resource('bukti-pendukung', BuktiPendukungController::class);
+    // Route::view('profile-page', 'pages.profile')->name('profile.page'); // Route ini menyebabkan error karena tidak mengirimkan data user
+    Route::get('history', [AuditController::class, 'history'])->name('history');
+    Route::get('history/{audit}/report', [AuditController::class, 'showReport'])->name('history.report');
+    Route::get('pelaporan', [LaporanController::class, 'index'])->name('pelaporan');
+    Route::post('pelaporan', [LaporanController::class, 'store'])->name('pelaporan.store');
     Route::view('tambah-pelaporan', 'pages.tambah_pelaporan')->name('tambah.pelaporan');
-    Route::view('visitasi-lapangan', 'pages.visitasi_lapangan')->name('visitasi.lapangan');
+    Route::get('visitasi-lapangan', [VisitasiLapanganController::class, 'index'])->name('visitasi.lapangan');
+    Route::post('visitasi-lapangan', [VisitasiLapanganController::class, 'store'])->name('visitasi.lapangan.store');
     Route::view('tambah-history', 'pages.tambah_history')->name('tambah.history');
 
     // CRUD Indikator
     Route::resource('indikator', IndikatorController::class);
+    Route::resource('indikator-dokumen', IndikatorDokumenController::class);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Auth Scaffolding Routes
-|--------------------------------------------------------------------------
-*/
 require __DIR__.'/auth.php';

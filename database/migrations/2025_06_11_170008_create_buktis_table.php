@@ -10,12 +10,11 @@ return new class extends Migration
     {
         Schema::create('buktis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_checklist_id')->constrained('item_checklists')->onDelete('cascade');
-            $table->foreignId('pengguna_unggah_id')->constrained('users');
-            $table->string('nama_file');
-            $table->string('path_file');
-            $table->string('tipe_file');
-            $table->integer('ukuran_file');
+            $table->foreignId('temuan_id')->constrained('temuans')->onDelete('cascade');
+            $table->foreignId('pengguna_unggah_id')->constrained('users')->comment('ID pengguna yang mengunggah bukti');
+            $table->string('nama_dokumen');
+            $table->string('file_path');
+            $table->string('status')->default('menunggu verifikasi');
             $table->timestamps();
         });
     }

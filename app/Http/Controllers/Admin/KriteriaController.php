@@ -30,12 +30,12 @@ class KriteriaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nama_kriteria' => 'required|string|max:255|unique:kriterias',
             'deskripsi_kriteria' => 'required|string',
         ]);
 
-        Kriteria::create($request->all());
+        Kriteria::create($validatedData);
 
         return redirect()->route('admin.kriteria.index')
                          ->with('success', 'Kriteria berhasil ditambahkan.');
@@ -44,30 +44,30 @@ class KriteriaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Kriteria $kriteria)
+    public function show(Kriteria $kriterium)
     {
-        return view('admin.kriteria.show', compact('kriteria'));
+        return view('admin.kriteria.show', ['kriteria' => $kriterium]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kriteria $kriteria)
+    public function edit(Kriteria $kriterium)
     {
-        return view('admin.kriteria.edit', compact('kriteria'));
+        return view('admin.kriteria.edit', ['kriteria' => $kriterium]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kriteria $kriteria)
+    public function update(Request $request, Kriteria $kriterium)
     {
         $request->validate([
-            'nama_kriteria' => 'required|string|max:255|unique:kriterias,nama_kriteria,' . $kriteria->id,
+            'nama_kriteria' => 'required|string|max:255|unique:kriterias,nama_kriteria,' . $kriterium->id,
             'deskripsi_kriteria' => 'required|string',
         ]);
 
-        $kriteria->update($request->all());
+        $kriterium->update($request->all());
 
         return redirect()->route('admin.kriteria.index')
                          ->with('success', 'Kriteria berhasil diperbarui.');
@@ -76,9 +76,9 @@ class KriteriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kriteria $kriteria)
+    public function destroy(Kriteria $kriterium)
     {
-        $kriteria->delete();
+        $kriterium->delete();
 
         return redirect()->route('admin.kriteria.index')
                          ->with('success', 'Kriteria berhasil dihapus.');
