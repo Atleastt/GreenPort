@@ -13,6 +13,9 @@ class IndikatorDokumen extends Model
         'nama_indikator',
         'deskripsi',
         'kategori',
-        'category',
+        'file_path',
+        'mime_type',
+        'size',
+        'uploaded_by',
     ];
 }

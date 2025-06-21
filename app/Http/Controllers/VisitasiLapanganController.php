@@ -36,4 +36,23 @@ class VisitasiLapanganController extends Controller
 
         return redirect()->route('visitasi.lapangan')->with('success', 'Jadwal visitasi berhasil ditambahkan.');
     }
+
+    /**
+     * Tampilkan detail visitasi tertentu.
+     */
+    public function show(VisitasiLapangan $visitasi): View
+    {
+        return view('pages.detail_visitasi_lapangan', ['visitasi' => $visitasi]);
+    }
+
+    /**
+     * Batalkan visitasi tertentu.
+     */
+    public function cancel(VisitasiLapangan $visitasi): RedirectResponse
+    {
+        $visitasi->status = 'Dibatalkan';
+        $visitasi->save();
+
+        return redirect()->route('visitasi.lapangan')->with('success', 'Visitasi berhasil dibatalkan.');
+    }
 }

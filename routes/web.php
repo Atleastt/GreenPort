@@ -75,6 +75,10 @@ Route::middleware([
     Route::view('tambah-pelaporan', 'pages.tambah_pelaporan')->name('tambah.pelaporan');
     Route::get('visitasi-lapangan', [VisitasiLapanganController::class, 'index'])->name('visitasi.lapangan');
     Route::post('visitasi-lapangan', [VisitasiLapanganController::class, 'store'])->name('visitasi.lapangan.store');
+// Detail Visitasi Lapangan
+Route::get('visitasi-lapangan/{visitasi}', [VisitasiLapanganController::class, 'show'])->name('visitasi.lapangan.show');
+// Cancel Visitasi Lapangan
+Route::patch('visitasi-lapangan/{visitasi}/cancel', [VisitasiLapanganController::class, 'cancel'])->name('visitasi.lapangan.cancel');
     Route::view('tambah-history', 'pages.tambah_history')->name('tambah.history');
 
     // CRUD Indikator

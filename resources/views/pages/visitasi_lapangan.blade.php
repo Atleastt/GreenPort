@@ -71,13 +71,13 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $schedule->auditor_name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $schedule->auditee_name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $schedule->status == 'Selesai' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $schedule->status == 'Selesai' ? 'bg-green-100 text-green-800' : ($schedule->status == 'Dibatalkan' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
                                                 {{ $schedule->status }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Detail</a>
-                                            <a href="#" class="text-red-600 hover:text-red-900">Batalkan</a>
+                                            <a href="{{ route('visitasi.lapangan.show', $schedule) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
+                                            <form action="{{ route('visitasi.lapangan.cancel', $schedule) }}" method="POST" class="inline">@csrf @method('PATCH')<button type="submit" class="text-red-600 hover:text-red-900">Batalkan</button></form>
                                         </td>
                                     </tr>
                                 @empty

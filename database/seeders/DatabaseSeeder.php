@@ -19,17 +19,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Admin User',
+            'name' => 'Admin',
             'email' => 'admin@example.com',
         ])->assignRole('Admin');
 
         User::factory()->create([
-            'name' => 'Auditor User',
+            'name' => 'Aom Auditor',
             'email' => 'auditor@example.com',
         ])->assignRole('Auditor');
 
         User::factory()->create([
-            'name' => 'Auditee User',
+            'name' => 'Aom Auditee',
             'email' => 'auditee@example.com',
         ])->assignRole('Auditee');
 

@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Audit extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +30,7 @@ class Audit extends Model
     ];
 
     /**
-     * Get the auditor for the audit.
+     * Get the auditor for this audit.
      */
     public function auditor()
     {
@@ -32,7 +38,7 @@ class Audit extends Model
     }
 
     /**
-     * Get the auditee for the audit.
+     * Get the auditee for this audit.
      */
     public function auditee()
     {
@@ -40,10 +46,13 @@ class Audit extends Model
     }
 
     /**
-     * Get the audit criteria for the audit.
+     * The criteria (indicators) for this audit.
      */
-    public function auditCriteria()
+    public function criteria()
     {
-        return $this->hasMany(AuditCriterion::class); // Assuming AuditCriterion model exists or will be created
+        return $this->belongsToMany(Indikator::class, 'audit_criteria', 'audit_id', 'criterion_id')
+                    ->using(AuditCriterion::class)
+                    ->withPivot('score', 'auditor_notes', 'status')
+                    ->withTimestamps();
     }
 }

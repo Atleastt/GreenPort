@@ -31,7 +31,6 @@ class IndikatorDokumenController extends Controller
             'nama_indikator' => $validatedData['nama_indikator'],
             'deskripsi' => $validatedData['deskripsi'],
             'kategori' => $validatedData['kategori'],
-            'category' => $validatedData['kategori'],
         ]);
 
         return redirect()->route('indikator-dokumen.index')->with('success', 'Indikator berhasil ditambahkan.');
