@@ -1,27 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Tambah Catatan Riwayat') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900
                     <form action="#" method="POST" class="space-y-6">
                         @csrf
 
                         <!-- Judul Peristiwa -->
                         <div>
-                            <label for="judul_peristiwa" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Judul Peristiwa</label>
-                            <input type="text" name="judul_peristiwa" id="judul_peristiwa" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Contoh: Rapat Kick-off Audit">
+                            <label for="judul_peristiwa" class="block text-sm font-medium text-gray-700 Peristiwa</label>
+                            <input type="text" name="judul_peristiwa" id="judul_peristiwa" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Contoh: Rapat Kick-off Audit">
                         </div>
 
                         <!-- Audit Terkait -->
                         <div>
-                            <label for="audit_terkait" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Audit Terkait (Opsional)</label>
-                            <select name="audit_terkait" id="audit_terkait" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                            <label for="audit_terkait" class="block text-sm font-medium text-gray-700 Terkait (Opsional)</label>
+                            <select name="audit_terkait" id="audit_terkait" class="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                 <option>Tidak ada</option>
                                 <option>Audit Kepatuhan SOP Logistik Q3</option>
                                 <option>Audit Sistem Informasi</option>
@@ -30,19 +30,19 @@
 
                         <!-- Tanggal Peristiwa -->
                         <div>
-                            <label for="tanggal_peristiwa" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Peristiwa</label>
-                            <input type="date" name="tanggal_peristiwa" id="tanggal_peristiwa" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <label for="tanggal_peristiwa" class="block text-sm font-medium text-gray-700 Peristiwa</label>
+                            <input type="date" name="tanggal_peristiwa" id="tanggal_peristiwa" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
                         <!-- Deskripsi -->
                         <div>
-                            <label for="deskripsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi</label>
-                            <textarea name="deskripsi" id="deskripsi" rows="4" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Jelaskan detail peristiwa atau catatan yang ingin ditambahkan."></textarea>
+                            <label for="deskripsi" class="block text-sm font-medium text-gray-700
+                            <textarea name="deskripsi" id="deskripsi" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Jelaskan detail peristiwa atau catatan yang ingin ditambahkan."></textarea>
                         </div>
 
                         <!-- Tombol Aksi -->
                         <div class="flex justify-end space-x-4">
-                            <button type="button" class="rounded-md border border-gray-300 bg-white dark:bg-gray-700 py-2 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600">Batal</button>
+                            <button type="button" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50
                             <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">Simpan Catatan</button>
                         </div>
                     </form>

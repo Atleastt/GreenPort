@@ -80,6 +80,30 @@ class BuktiPendukungController extends Controller
         return redirect()->route('bukti-pendukung.index')->with('success', 'Dokumen berhasil dihapus.');
     }
 
+    /**
+     * Approve a document by Auditor.
+     */
+    public function approve($id)
+    {
+        $bukti = Bukti::findOrFail($id);
+        $bukti->status = 'terverifikasi';
+        $bukti->verified_by_user_id = Auth::id();
+        $bukti->save();
+        return redirect()->route('bukti-pendukung.index')->with('success', 'Dokumen berhasil diverifikasi.');
+    }
+
+    /**
+     * Reject a document and request revision.
+     */
+    public function reject($id)
+    {
+        $bukti = Bukti::findOrFail($id);
+        $bukti->status = 'revisi';
+        $bukti->verified_by_user_id = Auth::id();
+        $bukti->save();
+        return redirect()->route('bukti-pendukung.index')->with('success', 'Dokumen dikembalikan untuk revisi.');
+    }
+
     // Metode create, edit, dan update tidak kita gunakan untuk saat ini
     // karena form ada di dalam modal di halaman index.
     public function create() { return abort(404); }

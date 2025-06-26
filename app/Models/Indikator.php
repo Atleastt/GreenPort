@@ -20,9 +20,9 @@ class Indikator extends Model
      */
     protected $fillable = [
         'subkriteria_id',
-        'code',
-        'name',
-        'description',
+        'teks_indikator',
+        'bobot',
+        'tipe_jawaban',
     ];
 
     /**
@@ -47,13 +47,10 @@ class Indikator extends Model
     /**
      * Get the documents for the indicator.
      */
-    public function documents()
+    public function itemChecklists(): HasMany
     {
-        // Assuming 'audit_criterion_id' in 'documents' table links to the pivot table id.
-        // This might need a more complex relationship setup depending on the final schema.
-        // For now, let's assume a direct link if possible, or this can be adjusted.
-        // A simpler way is to link documents directly to the indicator for a specific audit.
-        // This requires a more complex model structure, so we'll represent the direct link for now.
-        return $this->hasMany(IndikatorDokumen::class); // Or Bukti::class if direct link
+        return $this->hasMany(ItemChecklist::class);
     }
+
+
 }

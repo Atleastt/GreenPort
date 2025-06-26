@@ -23,7 +23,7 @@ class AuditController extends Controller
      */
     public function create()
     {
-        $auditees = User::where('role', 'Auditee')->get();
+        $auditees = User::role('Auditee')->get();
         return view('pages.form_buat_audit_auditor', compact('auditees'));
     }
 
@@ -62,7 +62,7 @@ class AuditController extends Controller
      */
     public function edit(Audit $audit)
     {
-        $auditees = User::where('role', 'Auditee')->get();
+        $auditees = User::role('Auditee')->get();
         return view('pages.form_edit_audit_auditor', compact('audit', 'auditees'));
     }
 

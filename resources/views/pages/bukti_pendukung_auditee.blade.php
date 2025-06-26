@@ -3,16 +3,94 @@
         uploadModalOpen: false,
         deleteModalOpen: false,
         itemToDelete: null,
+        // Base URL untuk hapus dokumen
+        baseUrl: '{{ url('bukti-pendukung') }}',
+        // Array untuk menyimpan upload offline
+        offlineUploads: JSON.parse(localStorage.getItem('offlineUploads') || '[]'),
         notification: { show: false, message: '' },
         showNotification(message) {
             this.notification.message = message;
             this.notification.show = true;
             setTimeout(() => this.notification.show = false, 5000);
+        },
+        // Convert data URL ke Blob
+        dataURLtoBlob(dataurl, mimeType) {
+            const arr = dataurl.split(',');
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--) { u8arr[n] = bstr.charCodeAt(n); }
+            return new Blob([u8arr], { type: mimeType });
+        },
+        // Simpan data form offline
+        saveOffline(formData) {
+            const uploads = this.offlineUploads;
+            const file = formData.get('file');
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                uploads.push({
+                    temuan_id: formData.get('temuan_id'),
+                    nama_dokumen: formData.get('nama_dokumen'),
+                    fileData: reader.result,
+                    filename: file.name,
+                    filetype: file.type,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('offlineUploads', JSON.stringify(uploads));
+                this.offlineUploads = uploads;
+            };
+        },
+        // Tangani submit form upload
+        submitUpload(event) {
+            console.log('submitUpload triggered', event, 'action:', event.target.action, 'online:', navigator.onLine);
+            const form = event.target;
+            const formData = new FormData(form);
+            if (navigator.onLine) {
+                fetch(form.action, { method: 'POST', body: formData })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        this.showNotification('Gagal upload, coba lagi.');
+                    }
+                })
+                .catch(() => {
+                    this.showNotification('Gagal koneksi, data disimpan offline.');
+                    this.saveOffline(formData);
+                    this.uploadModalOpen = false;
+                });
+            } else {
+                this.showNotification('Anda offline, data disimpan dan akan dikirim saat online.');
+                this.saveOffline(formData);
+                this.uploadModalOpen = false;
+            }
+        },
+        // Sinkronisasi upload offline saat online
+        syncOfflineUploads() {
+            if (!navigator.onLine) return;
+            const uploads = this.offlineUploads;
+            if (!uploads.length) return;
+            uploads.forEach(async u => {
+                try {
+                    const fd = new FormData();
+                    fd.append('temuan_id', u.temuan_id);
+                    fd.append('nama_dokumen', u.nama_dokumen);
+                    const blob = this.dataURLtoBlob(u.fileData, u.filetype);
+                    fd.append('file', blob, u.filename);
+                    const response = await fetch('{{ route('bukti-pendukung.store') }}', { method: 'POST', body: fd });
+                    if (response.ok) this.showNotification(`Unggah ${u.nama_dokumen} berhasil`);
+                } catch (e) {}
+            });
+            localStorage.removeItem('offlineUploads');
+            this.offlineUploads = [];
         }
     }" x-init="() => {
         @if (session('success'))
             showNotification('{{ session('success') }}');
         @endif
+        // Coba sinkronisasi jika ada data offline
+        syncOfflineUploads();
     }">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -20,6 +98,7 @@
                 <!-- Page Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-gray-800">Bukti Pendukung Audit</h1>
+                    @role('Auditee')
                     <button @click="uploadModalOpen = true"
                         class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-25 transition ease-in-out duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,6 +106,7 @@
                         </svg>
                         Unggah Dokumen
                     </button>
+                    @endrole
                 </div>
 
                 <!-- Success Notification -->
@@ -83,6 +163,26 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex items-center justify-end space-x-3">
+                                                    @role('Auditor')
+                                                        <form method="POST" action="{{ route('bukti-pendukung.approve', $doc->id) }}">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit" class="text-green-500 hover:text-green-700" title="Terverifikasi">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                                    <path d="M5 13l4 4L19 7" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                        <form method="POST" action="{{ route('bukti-pendukung.reject', $doc->id) }}">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit" class="text-red-500 hover:text-red-700" title="Kembalikan Revisi">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                                    <path d="M6 18L18 6M6 6l12 12" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    @endrole
                                                     <a href="{{ route('bukti-pendukung.show', $doc->id) }}" target="_blank" class="text-gray-400 hover:text-emerald-600" title="Lihat">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -131,7 +231,7 @@
                     <button @click="uploadModalOpen = false" class="text-gray-400 hover:text-gray-600">&times;</button>
                 </div>
 
-                <form action="{{ route('bukti-pendukung.store') }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6">
+                <form method="POST" @submit.prevent="submitUpload" action="{{ route('bukti-pendukung.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
                     @csrf
                     <div>
                         <label for="temuan_id" class="block text-sm font-medium text-gray-700">Terkait Temuan</label>
@@ -177,7 +277,7 @@
                     <p class="text-sm text-gray-600 mt-2 mb-6">Apakah Anda yakin ingin menghapus dokumen ini? Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
 
-                <form :action="'/bukti-pendukung/' + itemToDelete" method="POST">
+                <form :action="`${baseUrl}/${itemToDelete}`" method="POST" @submit="console.log('deleteSubmit triggered', baseUrl, itemToDelete)">
                     @csrf
                     @method('DELETE')
                     <div class="grid grid-cols-2 gap-4">

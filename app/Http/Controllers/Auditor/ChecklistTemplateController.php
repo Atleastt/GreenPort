@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auditor;
 
 use App\Http\Controllers\Controller;
-use App\Models\ChecklistTemplate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ChecklistTemplate;
 
 class ChecklistTemplateController extends Controller
 {
@@ -13,7 +14,10 @@ class ChecklistTemplateController extends Controller
      */
     public function index()
     {
-        //
+        $templates = ChecklistTemplate::where('pembuat_auditor_id', Auth::id())
+                          ->latest()
+                          ->paginate(10);
+        return view('auditor.checklist-templates.index', compact('templates'));
     }
 
     /**
@@ -21,7 +25,7 @@ class ChecklistTemplateController extends Controller
      */
     public function create()
     {
-        //
+        return view('auditor.checklist-templates.create');
     }
 
     /**
@@ -29,7 +33,15 @@ class ChecklistTemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_template' => 'required|string|max:255',
+            'deskripsi_template' => 'required|string',
+        ]);
+        $template = new ChecklistTemplate($validated);
+        $template->pembuat_auditor_id = Auth::id();
+        $template->save();
+        return redirect()->route('auditor.checklist-templates.index')
+                         ->with('success', 'Template berhasil dibuat.');
     }
 
     /**
@@ -37,7 +49,7 @@ class ChecklistTemplateController extends Controller
      */
     public function show(ChecklistTemplate $checklistTemplate)
     {
-        //
+        return view('auditor.checklist-templates.show', compact('checklistTemplate'));
     }
 
     /**
@@ -45,7 +57,7 @@ class ChecklistTemplateController extends Controller
      */
     public function edit(ChecklistTemplate $checklistTemplate)
     {
-        //
+        return view('auditor.checklist-templates.edit', compact('checklistTemplate'));
     }
 
     /**
@@ -53,7 +65,13 @@ class ChecklistTemplateController extends Controller
      */
     public function update(Request $request, ChecklistTemplate $checklistTemplate)
     {
-        //
+        $validated = $request->validate([
+            'nama_template' => 'required|string|max:255',
+            'deskripsi_template' => 'required|string',
+        ]);
+        $checklistTemplate->update($validated);
+        return redirect()->route('auditor.checklist-templates.index')
+                         ->with('success', 'Template berhasil diperbarui.');
     }
 
     /**
@@ -61,6 +79,8 @@ class ChecklistTemplateController extends Controller
      */
     public function destroy(ChecklistTemplate $checklistTemplate)
     {
-        //
+        $checklistTemplate->delete();
+        return redirect()->route('auditor.checklist-templates.index')
+                         ->with('success', 'Template berhasil dihapus.');
     }
 }

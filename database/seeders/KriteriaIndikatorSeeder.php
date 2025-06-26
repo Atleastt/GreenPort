@@ -72,8 +72,8 @@ class KriteriaIndikatorSeeder extends Seeder
                 foreach ($subkriteriaData['indikators'] as $indikatorData) {
                     $subkriteria->indikators()->create([
                         'teks_indikator' => $indikatorData['teks_indikator'],
-                        'bobot_indikator' => $indikatorData['bobot'],
-                        'poin_maks_indikator' => $indikatorData['poin'],
+                        'bobot' => $indikatorData['bobot'],
+                        'tipe_jawaban' => 'skala',
                     ]);
                 }
             }

@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('kriterias', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kriteria');
-            $table->text('deskripsi_kriteria');
+            $table->string('nama_kriteria')->unique();
+            $table->text('deskripsi_kriteria')->nullable();
             $table->timestamps();
         });
     }

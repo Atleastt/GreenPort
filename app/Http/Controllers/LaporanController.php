@@ -2,11 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audit;
 use App\Models\Laporan;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
+    /**
+     * Menampilkan daftar laporan.
+     */
+    /**
+     * Menampilkan form untuk membuat laporan baru berdasarkan audit.
+     */
+    public function create(Audit $audit)
+    {
+        // Anda bisa memuat data lain yang diperlukan dari audit di sini
+        return view('pages.create_laporan_auditor', compact('audit'));
+    }
+
     /**
      * Menampilkan daftar laporan.
      */
@@ -22,19 +35,22 @@ class LaporanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'report_type' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'audit_id' => 'required|exists:audits,id',
+            'report_title' => 'required|string|max:255',
+            'executive_summary' => 'nullable|string',
+            'findings_recommendations' => 'nullable|string',
+            'compliance_score' => 'nullable|numeric|min:0|max:100',
         ]);
 
         Laporan::create([
-            'name' => $request->report_type,
-            'period_start' => $request->start_date,
-            'period_end' => $request->end_date,
-            // 'created_at' akan diisi otomatis oleh Eloquent
+            'audit_id' => $request->audit_id,
+            'title' => $request->report_title,
+            'executive_summary' => $request->executive_summary,
+            'findings_recommendations' => $request->findings_recommendations,
+            'compliance_score' => $request->compliance_score,
         ]);
 
-        return redirect()->route('pelaporan')->with('success', 'Laporan berhasil dibuat.');
+        return redirect()->route('pelaporan')->with('success', 'Laporan audit berhasil dibuat.');
     }
     //
 }

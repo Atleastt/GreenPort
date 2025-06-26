@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sub_kriterias', function (Blueprint $table) {
-            //
+            $table->foreignId('kriteria_id')->constrained('kriterias')->onDelete('cascade')->after('id');
+            $table->string('nama_subkriteria')->after('kriteria_id');
+            $table->text('deskripsi_subkriteria')->nullable()->after('nama_subkriteria');
         });
     }
 
@@ -22,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sub_kriterias', function (Blueprint $table) {
-            //
+            $table->dropForeign(['kriteria_id']);
+            $table->dropColumn(['kriteria_id', 'nama_subkriteria', 'deskripsi_subkriteria']);
         });
     }
 };

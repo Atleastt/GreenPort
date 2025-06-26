@@ -1,33 +1,33 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Tambah Dokumen Baru') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900
                     <form action="#" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
                         <!-- Nama Dokumen -->
                         <div>
-                            <label for="nama_dokumen" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Dokumen</label>
-                            <input type="text" name="nama_dokumen" id="nama_dokumen" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Contoh: Laporan Audit Keuangan Q1">
+                            <label for="nama_dokumen" class="block text-sm font-medium text-gray-700 Dokumen</label>
+                            <input type="text" name="nama_dokumen" id="nama_dokumen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Contoh: Laporan Audit Keuangan Q1">
                         </div>
 
                         <!-- Deskripsi -->
                         <div>
-                            <label for="deskripsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi</label>
-                            <textarea name="deskripsi" id="deskripsi" rows="4" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Jelaskan isi atau tujuan dari dokumen ini."></textarea>
+                            <label for="deskripsi" class="block text-sm font-medium text-gray-700
+                            <textarea name="deskripsi" id="deskripsi" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Jelaskan isi atau tujuan dari dokumen ini."></textarea>
                         </div>
 
                         <!-- Kategori -->
                         <div>
-                            <label for="kategori" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kategori</label>
-                            <select name="kategori" id="kategori" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                            <label for="kategori" class="block text-sm font-medium text-gray-700
+                            <select name="kategori" id="kategori" class="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                 <option>Laporan Audit</option>
                                 <option>Bukti Pendukung</option>
                                 <option>Rencana Audit</option>
@@ -37,27 +37,27 @@
 
                         <!-- File Upload -->
                         <div>
-                            <label for="file_upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Unggah File</label>
-                            <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 px-6 pt-5 pb-6">
+                            <label for="file_upload" class="block text-sm font-medium text-gray-700 File</label>
+                            <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div class="space-y-1 text-center">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <div class="flex text-sm text-gray-600 dark:text-gray-400">
-                                        <label for="file_upload" class="relative cursor-pointer rounded-md bg-white dark:bg-gray-800 font-medium text-indigo-600 dark:text-indigo-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 dark:ring-offset-gray-800 hover:text-indigo-500">
+                                    <div class="flex text-sm text-gray-600
+                                        <label for="file_upload" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                             <span>Unggah sebuah file</span>
                                             <input id="file_upload" name="file_upload" type="file" class="sr-only">
                                         </label>
                                         <p class="pl-1">atau tarik dan lepas</p>
                                     </div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF, PDF hingga 10MB</p>
+                                    <p class="text-xs text-gray-500 JPG, GIF, PDF hingga 10MB</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Tombol Aksi -->
                         <div class="flex justify-end space-x-4">
-                            <button type="button" class="rounded-md border border-gray-300 bg-white dark:bg-gray-700 py-2 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600">Batal</button>
+                            <button type="button" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50
                             <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">Simpan</button>
                         </div>
                     </form>

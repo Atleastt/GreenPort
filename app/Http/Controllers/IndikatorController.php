@@ -13,9 +13,10 @@ class IndikatorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $indikators = Indikator::with('subkriteria.kriteria')->latest()->paginate(10);
+        return view('pages.indikator.index', compact('indikators'));
     }
 
     /**
@@ -32,14 +33,13 @@ class IndikatorController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'subkriteria_id' => 'required|exists:subkriterias,id',
             'teks_indikator' => 'required|string',
-            'bobot_indikator' => 'required|numeric|min:0',
-            'poin_maks_indikator' => 'required|numeric|min:0',
+            'bobot' => 'required|numeric|min:0',
         ]);
 
-        Indikator::create($request->all());
+        Indikator::create($validated);
 
         return redirect()->route('dashboard.auditor')->with('success', 'Indikator berhasil ditambahkan.');
     }
@@ -67,14 +67,13 @@ class IndikatorController extends Controller
      */
     public function update(Request $request, Indikator $indikator): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'subkriteria_id' => 'required|exists:subkriterias,id',
             'teks_indikator' => 'required|string',
-            'bobot_indikator' => 'required|numeric|min:0',
-            'poin_maks_indikator' => 'required|numeric|min:0',
+            'bobot' => 'required|numeric|min:0',
         ]);
 
-        $indikator->update($request->all());
+        $indikator->update($validated);
 
         return redirect()->route('dashboard.auditor')->with('success', 'Indikator berhasil diperbarui.');
     }

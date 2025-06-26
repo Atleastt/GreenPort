@@ -21,9 +21,6 @@ class Subkriteria extends Model
         'kriteria_id',
         'nama_subkriteria',
         'deskripsi_subkriteria',
-        'code',
-        'name',
-        'description',
     ];
 
     /**

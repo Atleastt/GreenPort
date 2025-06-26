@@ -19,12 +19,6 @@ class Kriteria extends Model
     protected $fillable = [
         'nama_kriteria',
         'deskripsi_kriteria',
-        'code',
-        'name',
-        'description',
-        'weight',
-        'creator_id',
-        'created_by_user_id',
     ];
 
     /**
@@ -35,11 +29,4 @@ class Kriteria extends Model
         return $this->hasMany(Subkriteria::class);
     }
 
-    /**
-     * Get the user that created the criterion.
-     */
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by_user_id');
-    }
 }

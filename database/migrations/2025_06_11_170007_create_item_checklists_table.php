@@ -10,12 +10,14 @@ return new class extends Migration
     {
         Schema::create('item_checklists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('checklist_kepatuhan_id')->constrained('checklist_kepatuhans')->onDelete('cascade');
+            $table->foreignId('checklist_audit_id')->constrained('checklist_audits')->onDelete('cascade');
             $table->foreignId('indikator_id')->constrained('indikators');
-            $table->text('jawaban_auditee')->nullable();
-            $table->decimal('skor_final_auditor', 5, 2)->nullable();
+            $table->text('jawaban_teks')->nullable();
+            $table->integer('jawaban_skala')->nullable();
+            $table->boolean('jawaban_ya_tidak')->nullable();
+            $table->decimal('skor_final', 5, 2)->nullable();
             $table->text('komentar_auditor')->nullable();
-            $table->enum('status_verifikasi', ['Disetujui', 'Ditolak'])->nullable();
+            // removed status_verifikasi per new structure
             $table->timestamps();
         });
     }

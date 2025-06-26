@@ -13,31 +13,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            RolesAndPermissionsSeeder::class,
-            TemuanSeeder::class,
-        ]);
+        // Seed roles and permissions first
+        $this->call(RolesAndPermissionsSeeder::class);
 
+        // Create default users with assigned roles
         User::factory()->create([
-            'name' => 'Admin',
+            'name'  => 'Admin',
             'email' => 'admin@example.com',
         ])->assignRole('Admin');
 
         User::factory()->create([
-            'name' => 'Aom Auditor',
+            'name'  => 'Aom Auditor',
             'email' => 'auditor@example.com',
         ])->assignRole('Auditor');
 
         User::factory()->create([
-            'name' => 'Aom Auditee',
+            'name'  => 'Aom Auditee',
             'email' => 'auditee@example.com',
         ])->assignRole('Auditee');
 
-        // User::factory(10)->create();
-
+        // Seed application data requiring users
         $this->call([
+            TemuanSeeder::class,
             KriteriaIndikatorSeeder::class,
+            AuditSeeder::class,
+            AuditCriteriaSeeder::class,
+            BuktiPendukungSeeder::class,
         ]);
+
+        // User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

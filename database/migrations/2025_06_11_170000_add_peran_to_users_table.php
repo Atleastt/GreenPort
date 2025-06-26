@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('peran', ['Auditor', 'Auditee', 'Admin'])->after('password')->default('Auditee');
-        });
+        // Kolom 'peran' tidak diperlukan karena menggunakan Spatie roles.
     }
 
     /**
@@ -21,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('peran');
-        });
+        // Tidak ada aksi karena kolom 'peran' tidak pernah dibuat.
     }
 };

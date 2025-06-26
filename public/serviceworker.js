@@ -1,52 +1,99 @@
-var staticCacheName = "pwa-v" + new Date().getTime();
-var filesToCache = [
-    '/offline',
-    '/css/app.css',
-    '/js/app.js',
-    '/images/icons/icon-72x72.png',
-    '/images/icons/icon-96x96.png',
-    '/images/icons/icon-128x128.png',
-    '/images/icons/icon-144x144.png',
-    '/images/icons/icon-152x152.png',
-    '/images/icons/icon-192x192.png',
-    '/images/icons/icon-384x384.png',
-    '/images/icons/icon-512x512.png',
-];
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
 
-// Cache on install
-self.addEventListener("install", event => {
-    this.skipWaiting();
-    event.waitUntil(
-        caches.open(staticCacheName)
-            .then(cache => {
-                return cache.addAll(filesToCache);
-            })
-    )
-});
+if (workbox) {
+  workbox.setConfig({ debug: false });
+  workbox.core.skipWaiting();
+  workbox.core.clientsClaim();
 
-// Clear cache on activate
-self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames
-                    .filter(cacheName => (cacheName.startsWith("pwa-")))
-                    .filter(cacheName => (cacheName !== staticCacheName))
-                    .map(cacheName => caches.delete(cacheName))
-            );
-        })
-    );
-});
+  // Precaching static assets
+  workbox.precaching.precacheAndRoute([
+    { url: '/offline', revision: null },
+    { url: '/images/icons/icon-72x72.png', revision: null },
+    { url: '/images/icons/icon-96x96.png', revision: null },
+    { url: '/images/icons/icon-128x128.png', revision: null },
+    { url: '/images/icons/icon-144x144.png', revision: null },
+    { url: '/images/icons/icon-152x152.png', revision: null },
+    { url: '/images/icons/icon-192x192.png', revision: null },
+    { url: '/images/icons/icon-384x384.png', revision: null },
+    { url: '/images/icons/icon-512x512.png', revision: null },
+  ]);
 
-// Serve from Cache
-self.addEventListener("fetch", event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                return response || fetch(event.request);
-            })
-            .catch(() => {
-                return caches.match('offline');
-            })
-    )
-});
+  // Background Sync plugin untuk upload offline
+  const bgSyncPlugin = new workbox.backgroundSync.BackgroundSyncPlugin('uploadQueue', {
+    maxRetentionTime: 24 * 60 // Retry selama 1 hari
+  });
+
+  // Intercept POST ke /uploads dan /bukti-pendukung: queue via Background Sync dan fallback ke cache
+  const uploadStrategy = new workbox.strategies.NetworkOnly({ plugins: [bgSyncPlugin] });
+  workbox.routing.registerRoute(
+    ({ url, request }) =>
+      request.method === 'POST' &&
+      (url.pathname === '/uploads' || url.pathname.startsWith('/bukti-pendukung')),
+    async ({ event }) => {
+      try {
+        // Coba kirim network, jika sukses respons akan diteruskan
+        return await uploadStrategy.handle({ event });
+      } catch (error) {
+        // Saat offline, kembalikan halaman upload dari cache atau halaman offline
+        const cachedResponse = await caches.match('/bukti-pendukung');
+        return cachedResponse || caches.match('/offline');
+      }
+    },
+    'POST'
+  );
+
+  // Cache-first untuk aset statis
+  workbox.routing.registerRoute(
+    ({ request }) => ['style', 'script', 'image', 'font'].includes(request.destination),
+    new workbox.strategies.CacheFirst({
+      cacheName: 'static-resources',
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({
+          maxEntries: 50,
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+        }),
+      ],
+    })
+  );
+
+  // Offline caching khusus untuk halaman upload (bukti-pendukung)
+  workbox.routing.registerRoute(
+    ({ request, url }) => request.mode === 'navigate' && url.pathname.startsWith('/bukti-pendukung'),
+    new workbox.strategies.NetworkFirst({
+      cacheName: 'upload-pages',
+      networkTimeoutSeconds: 3,
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({
+          maxEntries: 10,
+          maxAgeSeconds: 24 * 60 * 60, // cache satu hari
+        }),
+        new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
+        // Saat offline, kembalikan halaman upload yang sudah di-cache, atau halaman offline
+        {
+          handlerDidError: async ({ event }) => {
+            const cache = await caches.open('upload-pages');
+            const cachedResponse = await cache.match(event.request);
+            return cachedResponse || caches.match('/offline');
+          }
+        }
+      ],
+    })
+  );
+
+  // Fallback ke halaman offline untuk navigasi lain
+  workbox.routing.registerRoute(
+    ({ request, url }) => request.mode === 'navigate' && !url.pathname.startsWith('/bukti-pendukung'),
+    new workbox.strategies.NetworkFirst({
+      cacheName: 'pages',
+      networkTimeoutSeconds: 3,
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 7 * 24 * 60 * 60 }),
+        new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
+        { handlerDidError: async () => caches.match('/offline') }
+      ],
+    })
+  );
+
+} else {
+  console.log('Workbox gagal dimuat');
+}

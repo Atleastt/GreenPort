@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kriteria_id')->constrained('kriterias')->onDelete('cascade');
             $table->string('nama_subkriteria');
-            $table->text('deskripsi_subkriteria');
+            $table->text('deskripsi_subkriteria')->nullable();
             $table->timestamps();
         });
     }

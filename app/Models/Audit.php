@@ -23,10 +23,17 @@ class Audit extends Model
         'auditee_id',
         'scheduled_start_date',
         'scheduled_end_date',
-        'actual_start_date',
-        'actual_end_date',
         'status',
-        'completion_notes',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string,string>
+     */
+    protected $casts = [
+        'scheduled_start_date' => 'date',
+        'scheduled_end_date'   => 'date',
     ];
 
     /**
@@ -48,11 +55,16 @@ class Audit extends Model
     /**
      * The criteria (indicators) for this audit.
      */
+    public function checklistAudits()
+    {
+        return $this->hasMany(ChecklistAudit::class);
+    }
+
     public function criteria()
     {
         return $this->belongsToMany(Indikator::class, 'audit_criteria', 'audit_id', 'criterion_id')
                     ->using(AuditCriterion::class)
-                    ->withPivot('score', 'auditor_notes', 'status')
+                    ->withPivot('score', 'auditor_notes', 'status', 'auditee_notes', 'auditee_attachment_path')
                     ->withTimestamps();
     }
 }

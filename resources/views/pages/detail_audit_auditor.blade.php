@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Detail Audit: ') }} {{ $audit->title }}
             </h2>
-            <a href="{{ route('daftar.audit.auditor') }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200 text-sm">
+            <a href="{{ route('daftar.audit.auditor') }}" class="text-indigo-600 hover:text-indigo-900 text-sm">
                 &larr; Kembali ke Daftar Audit
             </a>
         </div>
@@ -12,41 +12,41 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900
                     <div class="space-y-4">
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Informasi Umum</h3>
-                            <dl class="mt-2 border-t border-b border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
+                            <h3 class="text-lg font-medium text-gray-900 Umum</h3>
+                            <dl class="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Nama Audit</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">{{ $audit->title }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500 Audit</dt>
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ $audit->title }}</dd>
                                 </div>
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Auditor</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">{{ $audit->auditor->full_name ?? 'N/A' }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ $audit->auditor->full_name ?? 'N/A' }}</dd>
                                 </div>
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Auditee</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">{{ $audit->auditee->full_name ?? 'N/A' }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ $audit->auditee->full_name ?? 'N/A' }}</dd>
                                 </div>
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Jadwal Mulai</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">{{ \Carbon\Carbon::parse($audit->scheduled_start_date)->translatedFormat('d F Y') }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500 Mulai</dt>
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ \Carbon\Carbon::parse($audit->scheduled_start_date)->translatedFormat('d F Y') }}</dd>
                                 </div>
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Jadwal Selesai</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">{{ \Carbon\Carbon::parse($audit->scheduled_end_date)->translatedFormat('d F Y') }}</dd>
+                                    <dt class="text-sm font-medium text-gray-500 Selesai</dt>
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ \Carbon\Carbon::parse($audit->scheduled_end_date)->translatedFormat('d F Y') }}</dd>
                                 </div>
                                 <div class="py-3 grid grid-cols-3 gap-4">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100 col-span-2">
+                                    <dt class="text-sm font-medium text-gray-500
+                                    <dd class="text-sm text-gray-900 col-span-2">
                                         @php
                                             $statusClass = match($audit->status) {
-                                                'Scheduled' => 'bg-gray-100 text-gray-800 dark:bg-gray-900/50 dark:text-gray-300',
-                                                'InProgress' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-                                                'Completed' => 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-                                                'Revising' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
+                                                'Scheduled' => 'bg-gray-100 text-gray-800',
+                                                'InProgress' => 'bg-blue-100 text-blue-800',
+                                                'Completed' => 'bg-green-100 text-green-800',
+                                                'Revising' => 'bg-yellow-100 text-yellow-800',
                                                 default => 'bg-gray-100 text-gray-800',
                                             };
                                         @endphp

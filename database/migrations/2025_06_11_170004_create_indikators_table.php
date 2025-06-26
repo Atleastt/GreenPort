@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('subkriteria_id')->constrained('subkriterias')->onDelete('cascade');
             $table->text('teks_indikator');
-            $table->decimal('bobot_indikator', 5, 2);
-            $table->decimal('poin_maks_indikator', 5, 2);
+            $table->decimal('bobot', 5, 2)->default(1.0);
+            $table->enum('tipe_jawaban', ['skala', 'teks', 'ya_tidak', 'file_only']);
             $table->timestamps();
         });
     }
