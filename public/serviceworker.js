@@ -18,27 +18,17 @@ if (workbox) {
     { url: '/images/icons/icon-512x512.png', revision: null },
   ]);
 
-  // Background Sync plugin untuk upload offline
-  const bgSyncPlugin = new workbox.backgroundSync.BackgroundSyncPlugin('uploadQueue', {
-    maxRetentionTime: 24 * 60 // Retry selama 1 hari
-  });
+  // Background Sync plugin untuk upload offline - DISABLED karena menggunakan manual sync
+  // const bgSyncPlugin = new workbox.backgroundSync.BackgroundSyncPlugin('uploadQueue', {
+  //   maxRetentionTime: 24 * 60 // Retry selama 1 hari
+  // });
 
-  // Intercept POST ke /uploads dan /bukti-pendukung: queue via Background Sync dan fallback ke cache
-  const uploadStrategy = new workbox.strategies.NetworkOnly({ plugins: [bgSyncPlugin] });
+  // Manual handling untuk POST ke '/bukti-pendukung' - tidak menggunakan background sync
+  // karena menggunakan localStorage approach di frontend
   workbox.routing.registerRoute(
     ({ url, request }) =>
-      request.method === 'POST' &&
-      (url.pathname === '/uploads' || url.pathname.startsWith('/bukti-pendukung')),
-    async ({ event }) => {
-      try {
-        // Coba kirim network, jika sukses respons akan diteruskan
-        return await uploadStrategy.handle({ event });
-      } catch (error) {
-        // Saat offline, kembalikan halaman upload dari cache atau halaman offline
-        const cachedResponse = await caches.match('/bukti-pendukung');
-        return cachedResponse || caches.match('/offline');
-      }
-    },
+      request.method === 'POST' && url.pathname.includes('/bukti-pendukung'),
+    new workbox.strategies.NetworkOnly(),
     'POST'
   );
 

@@ -7,6 +7,13 @@
         baseUrl: '{{ url('bukti-pendukung') }}',
         // Array untuk menyimpan upload offline
         offlineUploads: JSON.parse(localStorage.getItem('offlineUploads') || '[]'),
+        // State untuk sync
+        isSyncing: false,
+        // Status online/offline
+        isOnline: navigator.onLine,
+        // Debug mode untuk testing
+        debugMode: false,
+        simulateOffline: false,
         notification: { show: false, message: '' },
         showNotification(message) {
             this.notification.message = message;
@@ -29,68 +36,262 @@
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
-                uploads.push({
+                const newUpload = {
                     temuan_id: formData.get('temuan_id'),
                     nama_dokumen: formData.get('nama_dokumen'),
                     fileData: reader.result,
                     filename: file.name,
                     filetype: file.type,
                     createdAt: new Date().toISOString()
-                });
+                };
+                uploads.push(newUpload);
                 localStorage.setItem('offlineUploads', JSON.stringify(uploads));
                 this.offlineUploads = uploads;
+                console.log('Saved offline upload:', newUpload.nama_dokumen, 'Total offline uploads:', uploads.length);
             };
         },
         // Tangani submit form upload
         submitUpload(event) {
-            console.log('submitUpload triggered', event, 'action:', event.target.action, 'online:', navigator.onLine);
+            event.preventDefault();
+            console.log('submitUpload triggered', 'online:', this.isOnline);
             const form = event.target;
             const formData = new FormData(form);
-            if (navigator.onLine) {
-                fetch(form.action, { method: 'POST', body: formData })
+            
+            // Debug form data
+            console.log('Form data:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+            
+            if (this.isOnline && !this.simulateOffline) {
+                console.log('Device is online, attempting direct upload...');
+                fetch(form.action, { 
+                    method: 'POST', 
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
                 .then(response => {
+                    console.log('Upload response status:', response.status);
                     if (response.ok) {
-                        window.location.reload();
+                        this.showNotification('Dokumen berhasil diunggah!');
+                        this.uploadModalOpen = false;
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
                     } else {
+                        console.log('Upload failed, response not ok');
                         this.showNotification('Gagal upload, coba lagi.');
                     }
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.log('Upload failed with error:', error);
                     this.showNotification('Gagal koneksi, data disimpan offline.');
                     this.saveOffline(formData);
                     this.uploadModalOpen = false;
                 });
             } else {
+                console.log('Device is offline, saving data offline...');
                 this.showNotification('Anda offline, data disimpan dan akan dikirim saat online.');
                 this.saveOffline(formData);
                 this.uploadModalOpen = false;
             }
         },
         // Sinkronisasi upload offline saat online
-        syncOfflineUploads() {
-            if (!navigator.onLine) return;
-            const uploads = this.offlineUploads;
-            if (!uploads.length) return;
-            uploads.forEach(async u => {
-                try {
-                    const fd = new FormData();
-                    fd.append('temuan_id', u.temuan_id);
-                    fd.append('nama_dokumen', u.nama_dokumen);
-                    const blob = this.dataURLtoBlob(u.fileData, u.filetype);
-                    fd.append('file', blob, u.filename);
-                    const response = await fetch('{{ route('bukti-pendukung.store') }}', { method: 'POST', body: fd });
-                    if (response.ok) this.showNotification(`Unggah ${u.nama_dokumen} berhasil`);
-                } catch (e) {}
-            });
-            localStorage.removeItem('offlineUploads');
-            this.offlineUploads = [];
+        async syncOfflineUploads() {
+            console.log('=== SYNC OFFLINE UPLOADS STARTED ===');
+            console.log('isOnline:', this.isOnline);
+            console.log('simulateOffline:', this.simulateOffline);
+            console.log('offlineUploads count:', this.offlineUploads.length);
+            console.log('offlineUploads data:', this.offlineUploads);
+            
+            if (!this.isOnline || this.simulateOffline) {
+                console.log('SYNC SKIPPED - Device is offline or simulating offline');
+                return;
+            }
+            
+            const uploads = [...this.offlineUploads]; // Copy array untuk menghindari mutation
+            if (!uploads.length) {
+                console.log('SYNC SKIPPED - No offline uploads to sync');
+                return;
+            }
+            
+            // Set loading state
+            this.isSyncing = true;
+            console.log('=== STARTING SYNC PROCESS ===');
+            console.log('Uploads to process:', uploads.length);
+            let successCount = 0;
+            const failedUploads = [];
+            
+            try {
+                for (let i = 0; i < uploads.length; i++) {
+                    const u = uploads[i];
+                    console.log(`--- Processing upload ${i + 1}/${uploads.length} ---`);
+                    console.log('Upload data:', {
+                        nama_dokumen: u.nama_dokumen,
+                        temuan_id: u.temuan_id,
+                        filename: u.filename,
+                        filetype: u.filetype,
+                        createdAt: u.createdAt
+                    });
+                    
+                    try {
+                        const fd = new FormData();
+                        fd.append('_token', '{{ csrf_token() }}');
+                        fd.append('temuan_id', u.temuan_id);
+                        fd.append('nama_dokumen', u.nama_dokumen);
+                        const blob = this.dataURLtoBlob(u.fileData, u.filetype);
+                        fd.append('file', blob, u.filename);
+                        
+                        console.log('Sending POST request to:', '{{ route('bukti-pendukung.store') }}');
+                        
+                        const response = await fetch('{{ route('bukti-pendukung.store') }}', { 
+                            method: 'POST', 
+                            body: fd,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+                        
+                        console.log('Response status:', response.status);
+                        console.log('Response ok:', response.ok);
+                        
+                        if (response.ok) {
+                            successCount++;
+                            console.log('✅ Upload SUCCESS for:', u.nama_dokumen);
+                            this.showNotification(`Berhasil upload: ${u.nama_dokumen}`);
+                            
+                            // Delay antar upload untuk menghindari overload server
+                            if (i < uploads.length - 1) {
+                                console.log('Waiting 500ms before next upload...');
+                                await new Promise(resolve => setTimeout(resolve, 500));
+                            }
+                        } else {
+                            console.error('❌ Upload FAILED for:', u.nama_dokumen, 'Status:', response.status);
+                            const responseText = await response.text();
+                            console.error('Response text:', responseText);
+                            failedUploads.push(u);
+                        }
+                    } catch (e) {
+                        console.error('❌ Upload ERROR for:', u.nama_dokumen, 'Error:', e);
+                        failedUploads.push(u);
+                    }
+                }
+            } finally {
+                // Reset loading state
+                this.isSyncing = false;
+                console.log('=== SYNC PROCESS COMPLETED ===');
+            }
+            
+            console.log('SYNC RESULTS:');
+            console.log('- Success count:', successCount);
+            console.log('- Failed count:', failedUploads.length);
+            console.log('- Failed uploads:', failedUploads);
+            
+            // Update localStorage dengan data yang gagal upload
+            if (failedUploads.length > 0) {
+                console.log('⚠️ Some uploads failed, keeping in localStorage for retry');
+                localStorage.setItem('offlineUploads', JSON.stringify(failedUploads));
+                this.offlineUploads = failedUploads;
+                this.showNotification(`${successCount} berhasil, ${failedUploads.length} gagal. Akan coba lagi nanti.`);
+            } else {
+                // Semua berhasil, bersihkan localStorage
+                console.log('✅ All uploads successful, clearing localStorage');
+                localStorage.removeItem('offlineUploads');
+                this.offlineUploads = [];
+                
+                if (successCount > 0) {
+                    this.showNotification(`Semua ${successCount} dokumen berhasil disinkronkan!`);
+                    console.log('Reloading page in 2 seconds...');
+                    // Reload halaman setelah semua upload berhasil
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            }
+            
+            console.log('Updated offlineUploads count:', this.offlineUploads.length);
+            console.log('=== SYNC OFFLINE UPLOADS FINISHED ===');
         }
     }" x-init="() => {
         @if (session('success'))
-            showNotification('{{ session('success') }}');
+            this.showNotification('{{ session('success') }}');
         @endif
+        
+        // Load dan debug offline uploads
+        const storedUploads = localStorage.getItem('offlineUploads');
+        console.log('Stored offline uploads from localStorage:', storedUploads);
+        if (storedUploads) {
+            try {
+                const parsedUploads = JSON.parse(storedUploads);
+                console.log('Parsed offline uploads:', parsedUploads);
+                this.offlineUploads = parsedUploads;
+            } catch (e) {
+                console.error('Error parsing offline uploads:', e);
+                localStorage.removeItem('offlineUploads');
+                this.offlineUploads = [];
+            }
+        }
+        
         // Coba sinkronisasi jika ada data offline
-        syncOfflineUploads();
+        console.log('=== INITIAL SYNC CHECK ===');
+        console.log('Initial offlineUploads count:', this.offlineUploads.length);
+        console.log('Initial isOnline:', this.isOnline);
+        
+        if (this.offlineUploads.length > 0 && this.isOnline) {
+            console.log('Found offline uploads, scheduling initial sync...');
+            setTimeout(() => {
+                console.log('Executing initial sync...');
+                this.syncOfflineUploads();
+            }, 2000);
+        } else {
+            console.log('No initial sync needed');
+        }
+        
+        // Store reference ke instance ini untuk event listener
+        const self = this;
+        
+        // Event listener untuk online/offline status
+        window.addEventListener('online', () => {
+            console.log('=== DEVICE ONLINE EVENT TRIGGERED ===');
+            console.log('Offline uploads count:', self.offlineUploads.length);
+            self.isOnline = true;
+            
+            if (self.offlineUploads.length > 0) {
+                self.showNotification('Kembali online! Menyinkronkan data...');
+                console.log('Scheduling sync in 2 seconds...');
+                setTimeout(() => {
+                    console.log('Executing scheduled sync...');
+                    self.syncOfflineUploads();
+                }, 2000);
+            } else {
+                console.log('No offline uploads to sync');
+                self.showNotification('Kembali online!');
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('=== DEVICE OFFLINE EVENT TRIGGERED ===');
+            self.isOnline = false;
+            self.showNotification('Mode offline aktif');
+        });
+        
+        // Auto sync ketika halaman kembali focus (user kembali ke tab)
+        window.addEventListener('focus', () => {
+            if (self.isOnline && self.offlineUploads.length > 0) {
+                console.log('Page focused and online, checking for offline uploads...');
+                setTimeout(() => self.syncOfflineUploads(), 1000);
+            }
+        });
+        
+        // Periodic sync check (setiap 30 detik)
+        setInterval(() => {
+            if (self.isOnline && self.offlineUploads.length > 0) {
+                console.log('Periodic sync check...');
+                self.syncOfflineUploads();
+            }
+        }, 30000);
     }">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -98,15 +299,63 @@
                 <!-- Page Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-gray-800">Bukti Pendukung Audit</h1>
-                    @role('Auditee')
-                    <button @click="uploadModalOpen = true"
+                    <div class="flex items-center space-x-4">
+                        <!-- Status Online/Offline -->
+                        <div class="flex items-center px-2 py-1 rounded-md text-sm"
+                             :class="isOnline ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                            <div class="w-2 h-2 rounded-full mr-2"
+                                 :class="isOnline ? 'bg-green-500' : 'bg-red-500'"></div>
+                            <span x-text="isOnline ? 'Online' : 'Offline'"></span>
+                        </div>
+                        
+                        <!-- Offline Upload Indicator & Sync Button -->
+                        <div x-show="offlineUploads.length > 0" class="flex items-center space-x-2">
+                            <div class="flex items-center px-3 py-2 rounded-md text-sm"
+                                 :class="isSyncing ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'">
+                                <svg x-show="!isSyncing" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                <svg x-show="isSyncing" class="animate-spin w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span x-text="isSyncing ? 'Sedang menyinkron...' : offlineUploads.length + ' dokumen menunggu'"></span>
+                            </div>
+                            <button @click="syncOfflineUploads()" :disabled="!isOnline || isSyncing" 
+                                class="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+                                <svg x-show="isSyncing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span x-text="isSyncing ? 'Sedang Sync...' : 'Sinkronisasi'"></span>
+                            </button>
+                            <button @click="localStorage.removeItem('offlineUploads'); offlineUploads = []; showNotification('Data offline dihapus')" 
+                                class="px-3 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700">
+                                Hapus Data Offline
+                            </button>
+                        </div>
+                        
+                        <!-- Debug Tools (visible saat ada data offline) -->
+                        <div x-show="offlineUploads.length > 0" class="flex items-center space-x-2 border-l border-gray-300 pl-4">
+                            <!-- <button @click="console.log('=== DEBUG INFO ==='); console.log('offlineUploads:', offlineUploads); console.log('localStorage:', localStorage.getItem('offlineUploads')); console.log('isOnline:', isOnline); console.log('navigator.onLine:', navigator.onLine);" 
+                                class="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700">
+                                Debug Log
+                            </button> -->
+                            <button @click="console.log('=== FORCE SYNC TRIGGERED ==='); syncOfflineUploads();" 
+                                class="px-2 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+                                Sinkronisasi
+                            </button>
+                        </div>  
+                        
+                        @role('Auditee')
+                        <button @click="uploadModalOpen = true"
                         class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-25 transition ease-in-out duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                         </svg>
-                        Unggah Dokumen
-                    </button>
-                    @endrole
+                        Unggah Dokumen                        </button>
+                        @endrole
+                    </div>
                 </div>
 
                 <!-- Success Notification -->

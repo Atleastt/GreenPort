@@ -32,7 +32,7 @@
         }
         [x-cloak] { display: none !important; }
     </style>
-    {{-- @laravelPWA --}}
+    @laravelPWA
     @stack('styles')
 </head>
 <body class="font-sans antialiased bg-gray-100">
