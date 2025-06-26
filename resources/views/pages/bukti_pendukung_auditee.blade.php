@@ -330,7 +330,7 @@
                                 <span x-text="isSyncing ? 'Sedang Sync...' : 'Sinkronisasi'"></span>
                             </button>
                             <button @click="localStorage.removeItem('offlineUploads'); offlineUploads = []; showNotification('Data offline dihapus')" 
-                                class="px-3 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700">
+                                class="px-3 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 flex items-center">
                                 Hapus Data Offline
                             </button>
                         </div>
