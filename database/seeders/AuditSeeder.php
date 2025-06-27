@@ -20,34 +20,37 @@ class AuditSeeder extends Seeder
 
         // Scheduled audit
         Audit::updateOrCreate(
-            ['judul' => 'Audit Keamanan Sistem'],
+            ['title' => 'Audit Keamanan Sistem'],
             [
-                'auditor_id'    => $auditor->id,
-                'auditee_id'    => $auditee->id,
-                'tanggal_jadwal'=> Carbon::now()->addDays(7),
-                'status'        => 'Dijadwalkan',
+                'auditor_id'         => $auditor->id,
+                'auditee_id'         => $auditee->id,
+                'scheduled_start_date' => Carbon::now()->addDays(7),
+                'scheduled_end_date'   => Carbon::now()->addDays(14),
+                'status'             => 'Scheduled',
             ]
         );
 
         // Ongoing audit
         Audit::updateOrCreate(
-            ['judul' => 'Audit Proses Operasional'],
+            ['title' => 'Audit Proses Operasional'],
             [
-                'auditor_id'    => $auditor->id,
-                'auditee_id'    => $auditee->id,
-                'tanggal_jadwal'=> Carbon::now()->subDays(1),
-                'status'        => 'Berlangsung',
+                'auditor_id'         => $auditor->id,
+                'auditee_id'         => $auditee->id,
+                'scheduled_start_date' => Carbon::now()->subDays(1),
+                'scheduled_end_date'   => Carbon::now()->addDays(6),
+                'status'             => 'InProgress',
             ]
         );
 
         // Completed audit
         Audit::updateOrCreate(
-            ['judul' => 'Audit Kepatuhan Lingkungan'],
+            ['title' => 'Audit Kepatuhan Lingkungan'],
             [
-                'auditor_id'    => $auditor->id,
-                'auditee_id'    => $auditee->id,
-                'tanggal_jadwal'=> Carbon::now()->subDays(30),
-                'status'        => 'Selesai',
+                'auditor_id'         => $auditor->id,
+                'auditee_id'         => $auditee->id,
+                'scheduled_start_date' => Carbon::now()->subDays(30),
+                'scheduled_end_date'   => Carbon::now()->subDays(23),
+                'status'             => 'Completed',
             ]
         );
     }
