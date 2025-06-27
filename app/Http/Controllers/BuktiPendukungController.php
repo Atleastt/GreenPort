@@ -31,7 +31,7 @@ class BuktiPendukungController extends Controller
         $request->validate([
             'temuan_id' => 'required|exists:temuans,id',
             'nama_dokumen' => 'required|string|max:255',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,png|max:5120', // max 5MB
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,png|max:10240', // max 10MB for testing
         ]);
 
         $filePath = $request->file('file')->store('public/bukti_pendukung');

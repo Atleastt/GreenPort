@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\VisitasiLapanganController;
 use App\Http\Controllers\IndikatorDokumenController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\DocumentUploadTestController;
 use App\Http\Controllers\Auditee\DashboardController as AuditeeDashboardController;
 
 // Redirect root ke halaman login
@@ -103,6 +104,20 @@ Route::middleware([
     // CRUD Indikator
 
     Route::resource('indikator-dokumen', IndikatorDokumenController::class)->middleware('role:Auditor');
+
+    // Testing routes for document upload
+    Route::prefix('test-upload')->name('test.upload.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\DocumentUploadTestController::class, 'index'])->name('index');
+        Route::post('/2mb', [\App\Http\Controllers\DocumentUploadTestController::class, 'upload2MB'])->name('2mb');
+        Route::post('/5mb', [\App\Http\Controllers\DocumentUploadTestController::class, 'upload5MB'])->name('5mb');
+        Route::post('/10mb', [\App\Http\Controllers\DocumentUploadTestController::class, 'upload10MB'])->name('10mb');
+        Route::post('/50mb', [\App\Http\Controllers\DocumentUploadTestController::class, 'upload50MB'])->name('50mb');
+        Route::get('/results', [\App\Http\Controllers\DocumentUploadTestController::class, 'getTestResults'])->name('results');
+        Route::delete('/clear', [\App\Http\Controllers\DocumentUploadTestController::class, 'clearTestData'])->name('clear');
+        Route::post('/auto-test', [\App\Http\Controllers\DocumentUploadTestController::class, 'runAutomatedTests'])->name('auto');
+        Route::post('/concurrent-test', [\App\Http\Controllers\DocumentUploadTestController::class, 'testConcurrentUploads'])->name('concurrent');
+        Route::get('/system-info', [\App\Http\Controllers\DocumentUploadTestController::class, 'getSystemInfo'])->name('system');
+    });
 
     /*
     |--------------------------------------------------------------------------
