@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📚 Dokumentasi Lengkap - Sistem Audit Green Port
 
 ## 📋 Daftar Isi
@@ -817,3 +818,6 @@ public function boot()
 - **Laravel Documentation**: https://laravel.com/docs
 - **Tailwind CSS**: https://tailwindcss.com/docs
 - **Alpine.js**: https://alpinejs.dev/
+=======
+# GreenPort
+>>>>>>> 4a0a3bbc9f73d1260b78ec0f0c8ef42397df009f
