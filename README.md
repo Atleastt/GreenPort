@@ -83,9 +83,7 @@ php -m
 git clone [URL_REPOSITORY]
 cd greenport
 
-# Atau jika sudah ada folder
-cd /Users/leonfarhan/Documents/code/joki/TA-aom/greenport
-```
+
 
 ### 2. Install Dependencies
 
